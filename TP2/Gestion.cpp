@@ -9,6 +9,7 @@ using namespace std;
 Gestion::Gestion()
 {
 	listeDesArticles = new vector <Article*>;
+	lesCommandes = new vector <Commande*>;
 	fichierEcrire.open("sauvegarde.txt", ios::app);
 	ifstream fichierLire("sauvegarde.txt");
 
@@ -37,6 +38,17 @@ Gestion::Gestion()
 
 Gestion::~Gestion()
 {
+	fichierEcrire.close();
+	fichierEcrire.open("sauvegarde.txt", ios::out);
+	for (int i = 0; i < listeDesArticles->size(); i++)
+	{
+		if (fichierEcrire.is_open())
+		{
+			fichierEcrire << listeDesArticles->at(i)->getNom() << "," << listeDesArticles->at(i)->prixHT << "," << listeDesArticles->at(i)->stock << endl;
+		}
+	}
+	supprimerLesCommandes();
+	delete lesCommandes;
 	supprimerLesArticles();
 	delete listeDesArticles;
 	fichierEcrire.close();
@@ -84,7 +96,6 @@ void Gestion::modifierArticle(int index, double prixHT, int stock)
 
 }
 
-
 void Gestion::lireArticles()
 {
 	for (int i = 0; i < listeDesArticles->size(); i++) {
@@ -101,5 +112,17 @@ void Gestion::supprimerLesArticles()
 			delete article;
 		}
 		listeDesArticles->clear();
+	}
+}
+
+void Gestion::supprimerLesCommandes()
+{
+	if (lesCommandes->size() > 0)
+	{
+		for (Commande* commande : *lesCommandes)
+		{
+			delete commande;
+		}
+		lesCommandes->clear();
 	}
 }

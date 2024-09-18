@@ -14,13 +14,14 @@ IHM::~IHM() {
 
 void IHM::afficherMenu()
 {
-	while (choix != 5) {
+	while (choix != 6) {
 		cout << "..........Menu.........." << endl;
 		cout << "Tapez 1 pour ajouter un article......" << endl;
 		cout << "Tapez 2 pour modifier un article......" << endl;
 		cout << "Tapez 3 pour supprimer un article......." << endl;
 		cout << "Tapez 4 pour lire vos articles........" << endl;
-		cout << "Tapez 5 pour arreter votre session......." << endl;
+		cout << "Tapez 5 pour faire une commande......." << endl;
+		cout << "Tapez 6 pour arreter votre session......." << endl;
 
 		cout << "Votre choix: ";
 		cin >> choix;
@@ -40,6 +41,9 @@ void IHM::afficherMenu()
 			lireArticles();
 			break;
 		case 5:
+			faireUneCommande();
+			break;
+		case 6:
 			arreterSession();
 			break;
 		}
@@ -89,8 +93,51 @@ void IHM::lireArticles()
 	}
 }
 
+void IHM::faireUneCommande()
+{
+	cout << "Bienvenue a la page de la creation d'une commande." << endl;
+	cout << "Voici les articles disponibles a commander: " << endl;
+	gestion->lireArticles();
+	int choix = 0;
+	int quantite = 0;
+	int isEnd;
+
+	do
+	{
+		cout << "Choisissez un article que vous voulez commander en entrant son numero: ";
+		cin >> choix;
+		cout << "Vous avez choisi l'article numero " << choix << ". Son nom est " << gestion->listeDesArticles->at(choix - 1)->getNom() << endl;
+		cout << "Combien d'articles de ce type voulez vous commander: ";
+		cin >> quantite;
+		cout << "Est-ce que vous voulez commander un autre article? (0 - oui, 1 - non): ";
+		cin >> isEnd;
+
+		Commande* commande = new Commande();
+		commande->numero = choix;
+		commande->quantite = quantite;
+		commande->prixTotal = quantite * gestion->listeDesArticles->at(choix - 1)->prixHT;
+		gestion->lesCommandes->push_back(commande);
+
+		gestion->listeDesArticles->at(choix - 1)->setStock((gestion->listeDesArticles->at(choix - 1)->stock) - quantite);
+		
+		if (isEnd == 1)
+		{
+			cout << "Votre commande: " << endl;
+			for (int i = 0; i < gestion->lesCommandes->size(); i++)
+			{
+				cout << "------------------- Numero " << (i + 1) << " --------------------" << endl;
+				cout << "Numero d'article: " << gestion->lesCommandes->at(i)->numero << endl;
+				cout << "Nom d'article: " << gestion->listeDesArticles->at(gestion->lesCommandes->at(i)->numero - 1)->getNom() << endl;
+				cout << "Quantite: " << gestion->lesCommandes->at(i)->quantite << endl;
+				cout << "Prix total HT: " << gestion->lesCommandes->at(i)->prixTotal << endl;
+				cout << "Prix TTC: " << gestion->lesCommandes->at(i)->prixTotal * 1.2 << endl;
+				cout << "--------------------------------------------------" << endl;
+			}
+		}
+	} while (isEnd != 1);
+}
+
 void IHM::arreterSession()
 {
-	gestion->supprimerLesArticles();
 	cout << "La fin de session.";
 }

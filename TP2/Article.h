@@ -10,4 +10,5 @@ public:
 	string getNom();
 	double prixHT;
 	int stock;
+	void setStock(int stock);
 };

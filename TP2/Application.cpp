@@ -3,6 +3,7 @@
 
 void main()
 {
-	IHM programme;
-	programme.afficherMenu();
+	IHM * programme = new IHM();
+	programme->afficherMenu();
+	delete programme;
 }

@@ -9,3 +9,8 @@ string Article::getNom()
 {
     return nom;
 }
+
+void Article::setStock(int s)
+{
+    stock = s;
+}

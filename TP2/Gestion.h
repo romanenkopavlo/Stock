@@ -4,12 +4,14 @@ using namespace std;
 #include <vector>;
 #include <fstream>;
 #include "Article.h";
+#include "Commande.h";
 
 class Gestion
 {
 public:
     Gestion();
     ~Gestion();
+    vector <Commande*> * lesCommandes;
     vector <Article*> * listeDesArticles;
     ofstream fichierEcrire;
     void ajouterArticle(string nom);
@@ -17,4 +19,5 @@ public:
     void modifierArticle(int index, double prixHT, int stock);
     void lireArticles();
     void supprimerLesArticles();
+    void supprimerLesCommandes();
 };

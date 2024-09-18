@@ -14,6 +14,7 @@ private:
 	void lireArticles();
 	void modifierArticle();
 	void arreterSession();
+	void faireUneCommande();
 public:
 	IHM();
 	~IHM();
